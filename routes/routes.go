@@ -5,19 +5,11 @@ import (
 	"warehouse-management/controllers"
 )
 
-func SetupRouter() *gin.Engine {
-	router := gin.Default()
-
-	// Endpoint untuk Penerimaan Barang
-	router.POST("/penerimaan", controllers.CreatePenerimaan)
-	router.GET("/penerimaan", controllers.GetAllPenerimaan)
-
-	// Endpoint untuk Pengeluaran Barang
-	router.POST("/pengeluaran", controllers.CreatePengeluaran)
-	router.GET("/pengeluaran", controllers.GetAllPengeluaran)
-
-	// Endpoint untuk Laporan Stok Barang
-	router.GET("/stok", controllers.GetStockReport)
-
-	return router
+func RegisterRoutes(router *gin.Engine, warehouseController *controllers.WarehouseController) {
+	api := router.Group("/api")
+	{
+		api.POST("/penerimaan", warehouseController.RecordPenerimaan)
+		api.POST("/pengeluaran", warehouseController.RecordPengeluaran)
+		api.GET("/stock", warehouseController.GetStockReport)
+	}
 }
